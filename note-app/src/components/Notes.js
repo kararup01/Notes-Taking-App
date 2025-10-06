@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateNote from "./CreateNote";
 import Note from "./Note";
 
 const Notes = () => {
 
-  const [notes, setNotes] = useState(DEFAULT_NOTES);
+  const [notes, setNotes] = useState(() => {
+    let Data = JSON.parse(localStorage.getItem('myData'));
+    return Data || [];
+  });
 
   const addNotes = (newNote) => {
-    setNotes(
-      [...notes, newNote]
-    )
+    setNotes((prevState) => [...prevState, newNote]);
   };
 
   const deleteNotes = (id) => {
@@ -18,13 +19,17 @@ const Notes = () => {
     )
   };
 
+  useEffect(() => {
+    localStorage.setItem('myData', JSON.stringify(notes));
+  });
+
   return (
     <>
-      {notes.map((item) => (
-        <Note item={item} handleDelete={deleteNotes} />
-      ))}
-
       <div className="notes">
+        {notes.map((item) => (
+          <Note key={item.id} item={item} handleDelete={deleteNotes} />
+        ))}
+
         <CreateNote handleAddNotes={addNotes} />
       </div>
     </>
@@ -33,13 +38,13 @@ const Notes = () => {
 
 export default Notes;
 
-const DEFAULT_NOTES = [
-  {
-    id: '001',
-    text: "I have learn react.js in 20 days",
-  },
-  {
-    id: '002',
-    text: "I have learn next.js in 20 days",
-  },
-];
+// const DEFAULT_NOTES = [
+//   {
+//     id: '001',
+//     text: "I have learn react.js in 20 days",
+//   },
+//   {
+//     id: '002',
+//     text: "I have learn next.js in 20 days",
+//   },
+// ];

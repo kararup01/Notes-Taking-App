@@ -4,7 +4,7 @@ const Note = ({ item, handleDelete }) => {
     <>
       <div className="note">
         <div>{item.text}</div>
-        <button onClick={() => handleDelete(item.id)}>Delete</button>
+        <button className="del_btn" onClick={() => handleDelete(item.id)}>Delete</button>
       </div>
     </>
   )
